@@ -10,15 +10,15 @@ public class Baekjoon10950 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int t = Integer.parseInt(br.readLine());
-        StringBuilder sb = new StringBuilder();
+        String ret = "";
 
         for(int i = 0 ; i < t ; i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
-            sb.append(Integer.parseInt(st.nextToken()) + Integer.parseInt(st.nextToken()));
-            sb.append('\n');
+            ret += Integer.parseInt(st.nextToken()) + Integer.parseInt(st.nextToken());
+            ret += '\n';
         }
 
-        System.out.println(sb);
+        System.out.println(ret);
 
     }
 }
