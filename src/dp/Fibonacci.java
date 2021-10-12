@@ -7,20 +7,15 @@ public class Fibonacci {
         System.out.println(fibo(26));
     }
 
-    public static int fibo(int num) {
-        //첫번재 수열인 경우
-        if (num == 1) {
-            return 1;
+    public static int fibo(int num){
+        //첫번째, 두번째 수열에 1 저장
+        dp[0] = 1;
+        dp[1] = 1;
+
+        //반복문을 돌며 3번째 수열부터 차례로 값을 채워넣는다
+        for(int i = 2; i < num; i++){
+            dp[i] = dp[i - 1] + dp[i - 2];
         }
-        //두번째 수열인 경우
-        if (num == 2) {
-            return 1;
-        }
-        //배열에 저장된 값이 있을 시 저장된 값 반환
-        if (dp[num] != 0) {
-            return dp[num];
-        }
-        //저장된 값이 없는 경우, 값을 저장 후 반환
-        return dp[num] = fibo(num - 1) + fibo(num - 2);
+        return dp[num - 1];
     }
 }
