@@ -10,15 +10,18 @@ public class Baekjoon11726 {
         int n = Integer.parseInt(br.readLine());
         int dp[] = new int[n+1];
 
-        dp[0] = 1;
-        dp[1] = 1;
-
-        for(int i = 2; i <= n; i++) {
-            dp[i] = (dp[i - 1] + dp[i - 2]) % 10007;
-        }
-
-        System.out.println(dp[n]);
+        System.out.println(recur(dp, n));
         br.close();
+    }
+
+    public static int recur(int[] dp, int num){
+        if(num == 1 || num == 0){
+            return 1;
+        }
+        if(dp[num] == 0){
+            dp[num] = (recur(dp,num-1) + recur(dp, num-2)) % 10007;
+        }
+        return dp[num];
     }
 
 }
