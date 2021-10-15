@@ -10,20 +10,14 @@ public class Baekjoon11727 {
         int n = Integer.parseInt(br.readLine());
 
         int[] d = new int[n+1];
+        d[0] = 1;
+        d[1] = 1;
 
-        System.out.println(recur(d, n));
+        for(int i = 2; i <= n; i++){
+            d[i] = (d[i-2] * 2 + d[i-1]) % 10007;
+        }
+
+        System.out.println(d[n]);
         br.close();
-    }
-
-    public static int recur(int[] d, int num){
-        if(num == 0 || num == 1){
-            return 1;
-        }
-
-        if(d[num] == 0){
-            d[num] = (recur(d,num-2) * 2 + recur(d,num-1)) % 10007;
-        }
-
-        return d[num];
     }
 }
