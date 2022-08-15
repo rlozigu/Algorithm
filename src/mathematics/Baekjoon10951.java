@@ -9,17 +9,12 @@ public class Baekjoon10951 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
-        String str;
-        String result = "";
+        String str = "";
 
-        while((str=br.readLine()) != null){
-            st = new StringTokenizer(str, " ");
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-
-            result += a + b + "\n";
+        while ((str = br.readLine()) != null) {
+            st = new StringTokenizer(str);
+            System.out.println(Integer.parseInt(st.nextToken())+Integer.parseInt(st.nextToken()));
         }
-        System.out.println(result);
 
     }
 }
