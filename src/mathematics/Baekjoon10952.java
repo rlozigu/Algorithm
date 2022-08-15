@@ -8,21 +8,12 @@ import java.util.StringTokenizer;
 public class Baekjoon10952 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+        StringTokenizer st;
+        String str;
 
-        while(true){
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-
-            int result = a + b;
-
-            if(result == 0)
-                break;
-
-            sb.append(result).append("\n");
-
+        while (!(str = br.readLine()).equals("0 0")) {
+            st = new StringTokenizer(str);
+            System.out.println(Integer.parseInt(st.nextToken()) + Integer.parseInt(st.nextToken()));
         }
-        System.out.println(sb);
     }
 }
