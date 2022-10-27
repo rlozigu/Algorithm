@@ -10,34 +10,15 @@ public class Baekjoon1476 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int E = Integer.parseInt(st.nextToken());
-        int S = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        int E = Integer.parseInt(st.nextToken()) - 1;
+        int S = Integer.parseInt(st.nextToken()) - 1;
+        int M = Integer.parseInt(st.nextToken()) - 1;
 
-        int e = 1;
-        int s = 1;
-        int m = 1;
-
-        for (int i = 1; i <= 7980; i++) {
-            if(E == e && S == s && M == m) {
-                System.out.println(i);
+        for (int i = 0; ; i++) {
+            if(E == i % 15 && S == i % 28 && M == i % 19) {
+                System.out.println(i + 1);
                 return;
             }
-
-            e++;
-            s++;
-            m++;
-
-            if (i % 15 == 0) {
-                e = 1;
-            }
-            if (i % 28 == 0) {
-                s = 1;
-            }
-            if (i % 19 == 0) {
-                m = 1;
-            }
-
         }
     }
 }
