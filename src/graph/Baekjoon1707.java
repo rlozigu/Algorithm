@@ -30,34 +30,29 @@ public class Baekjoon1707 {
                 g[num2].add(num1);
             }
 
+            boolean result = true;
             for (int j = 1; j <= v; j++) {
                 if (checked[j] == 0) {
-                    dfs(j, 1);
-                }
-            }
-
-            boolean result = true;
-            for (int j = 1 ; j <= v; j++) {
-                for (int l = 0; l < g[j].size(); l++) {
-                    if (checked[j] == checked[g[j].get(l)]) {
-                        result = false;
-                    }
+                    if(!dfs(j, 1)) result = false;
                 }
             }
 
             System.out.println(result?"YES":"NO");
-
-
         }
     }
 
-    static void dfs(int node, int c) {
+    static boolean dfs(int node, int c) {
         checked[node] = c;
         for (int i = 0; i < g[node].size(); i++) {
             int next = g[node].get(i);
             if(checked[next] == 0){
-                dfs(next, 3 - c);
+                if(dfs(next, 3 - c) == false){
+                    return false;
+                }
+            } else if (checked[node] == checked[next]) {
+                return false;
             }
         }
+        return true;
     }
 }
