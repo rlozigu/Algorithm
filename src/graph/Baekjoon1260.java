@@ -1,66 +1,73 @@
 package graph;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class Baekjoon1260 {
-    static int n;
+    static List<Integer>[] arr;
     static boolean[] check;
-    static boolean[][] arr;
-
-    static Queue<Integer> q = new LinkedList<>();
+    static String result = "";
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        n = sc.nextInt();
+        int n = sc.nextInt();
         int m = sc.nextInt();
         int v = sc.nextInt();
 
-        arr = new boolean[n+1][n+1];
-        check = new boolean[n+1];
+        arr = new ArrayList[n + 1];
+        check = new boolean[n + 1];
+
+        for (int i = 1; i <= n; i++) {
+            arr[i] = new ArrayList<>();
+        }
 
         for (int i = 0; i < m; i++) {
             int a = sc.nextInt();
             int b = sc.nextInt();
 
-            arr[a][b] = true;
-            arr[b][a] = true;
+            arr[a].add(b);
+            arr[b].add(a);
+        }
+
+        for (int i = 1; i <= n; i++) {
+            Collections.sort(arr[i]);
         }
 
         dfs(v);
-        System.out.println();
-        check = new boolean[n+1];
+        result += "\n";
+        check = new boolean[n + 1];
         bfs(v);
-
+        System.out.println(result);
     }
 
-    static void dfs(int x){
-        check[x] = true;
-        System.out.print(x + " ");
+    static void dfs(int node){
+        check[node] = true;
+        result += node + " ";
 
-        for (int i = 1; i <= n; i++) {
-            if (arr[x][i] && !check[i]){
-                dfs(i);
+        for (int i = 0; i < arr[node].size(); i++) {
+            int y = arr[node].get(i);
+
+            if (!check[y]) {
+                dfs(y);
             }
         }
     }
 
-    static void bfs(int x){
-        check[x] = true;
-        q.add(x);
-        System.out.print(x + " ");
+    static void bfs(int node){
+        Queue<Integer> q = new LinkedList<>();
 
-        while (!q.isEmpty()) {
-            int y = q.peek();
-            q.remove();
-            for (int i = 1; i <= n; i++) {
-                if (arr[y][i] && !check[i]) {
-                    check[i] = true;
-                    q.add(i);
-                    System.out.print(i +  " ");
+        q.add(node);
+        check[node] = true;
+
+        while (!q.isEmpty()){
+            int num = q.remove();
+            result += num + " ";
+
+            for (int i = 0; i < arr[num].size(); i++) {
+                int num2 = arr[num].get(i);
+                if(!check[num2]){
+                    q.add(num2);
+                    check[num2] = true;
                 }
             }
         }
