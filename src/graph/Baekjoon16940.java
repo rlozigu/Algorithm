@@ -1,9 +1,6 @@
 package graph;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
+import java.util.*;
 
 public class Baekjoon16940 {
     public static void main(String[] args) {
@@ -11,7 +8,7 @@ public class Baekjoon16940 {
 
         int n = sc.nextInt();
         ArrayList<Integer>[] arr = new ArrayList[n+1];
-        int[] parent = new int[n+1];
+        int[] ints = new int[n+1];
         int[] order = new int[n+1];
         boolean[] check = new boolean[n+1];
 
@@ -28,41 +25,47 @@ public class Baekjoon16940 {
         }
 
         for (int i = 1; i <= n; i++) {
-            order[i] = sc.nextInt();
+            ints[i] = sc.nextInt();
+            order[ints[i]] = i;
+        }
+
+        for (int i = 1; i < n + 1; i++) {
+            arr[i].sort(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    if (order[o1] < order[o2]) {
+                        return -1;
+                    } else if (order[o1] == order[o2]) {
+                        return 0;
+                    } else {
+                        return 1;
+                    }
+
+                }
+            });
         }
 
         Queue<Integer> q = new LinkedList<>();
         q.add(1);
         check[1] = true;
+        ArrayList<Integer> bfsOrder = new ArrayList<>();
 
-        int m = 1;//큐의 크기
-        for (int i = 1; i <= n; i++) {
-            if (q.isEmpty()) {
-                System.out.println(0);
-                System.exit(0);
-            }
+        while (!q.isEmpty()) {
             int x = q.remove();
-            if (x != order[i]) {
-                System.out.println(0);
-                System.exit(0);
-            }
-            int cnt = 0;
+            bfsOrder.add(x);
             for (int y : arr[x]) {
                 if (!check[y]) {
-                    parent[y] = x;
-                    cnt++;
+                    check[y] = true;
+                    q.add(y);
                 }
             }
-            for (int j = 1; j <= cnt; j++) {
-                if (m + j > n || parent[order[m + j]] != x) {
-                    System.out.println(0);
-                    System.exit(0);
-                }
-                q.add(order[m + j]);
-                check[order[m + j]] = true;
-            }
-            m += cnt;
         }
-        System.out.println(1);
-    }
+        boolean ok = true;
+        for (int i = 0; i < n; i++) {
+            if (bfsOrder.get(i) != ints[i+1]) {
+                ok = false;
+            }
+        }
+        System.out.println(ok?1:0);
+        }
 }
