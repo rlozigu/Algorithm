@@ -1,5 +1,6 @@
 package graph;
 
+import java.util.ArrayDeque;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
@@ -16,35 +17,29 @@ public class Baekjoon13549 {
             check[i] = -1;
         }
 
-        Queue<Integer> q = new LinkedList<>();
-        Queue<Integer> next = new LinkedList<>();
-
+        ArrayDeque<Integer> q = new ArrayDeque<>();
         q.add(n);
         check[n] = 0;
+
         while (!q.isEmpty()) {
-            int x = q.remove();
+            int x = q.poll();
             if (x * 2 < MAX) {
                 if (check[x * 2] == -1) {
-                    q.add(x * 2);
+                    q.addFirst(x * 2);
                     check[x * 2] = check[x];
                 }
             }
             if (x + 1 < MAX) {
                 if (check[x + 1] == -1) {
-                    next.add(x + 1);
+                    q.addLast(x + 1);
                     check[x+1] = check[x] + 1;
                 }
             }
             if (x - 1 >= 0) {
                 if (check[x - 1] == -1) {
-                    next.add(x - 1);
+                    q.addLast(x - 1);
                     check[x-1] = check[x] + 1;
                 }
-            }
-
-            if (q.isEmpty()) {
-                q = next;
-                next = new LinkedList<>();
             }
         }
         System.out.println(check[k]);
