@@ -17,43 +17,54 @@ public class P92334 {
     }
 
     static int[] solution(String[] id_list, String[] report, int k) {
-        Set<Integer>[] set = new HashSet[id_list.length];
-
-        for (int i = 0; i < set.length; i++) {
-            set[i] = new HashSet<>();
-        }
-
-        for (int i = 0; i < report.length; i++) {
-            String arr[] = report[i].split(" ");
-            int x = IntStream.range(0, id_list.length)
-                    .filter(j -> arr[0].equals(id_list[j]))
-                    .findFirst()
-                    .orElse(-1);
-            int y = IntStream.range(0, id_list.length)
-                    .filter(j -> arr[1].equals(id_list[j]))
-                    .findFirst()
-                    .orElse(-1);
-
-            set[x].add(y);
-        }
-
-        int[] arr = new int[id_list.length];
         int[] answer = new int[id_list.length];
-        for (int i = 0; i < set.length; i++) {
-            for (int x: set[i]) {
-                arr[x]++;
-            }
+        ArrayList<User> users = new ArrayList<>();
+        HashMap<String,Integer> suspendedList = new HashMap<>();
+        HashMap<String,Integer> idIdx = new HashMap<>();
+
+        int idx = 0;
+
+        //1. 유저 정보 세팅
+        for (int i = 0; i < id_list.length; i++) {
+            idIdx.put(id_list[i], i);
+            users.add(new User(id_list[i]));
         }
 
-        for (int i = 0; i < set.length; i++) {
-            for (int x: set[i]) {
-                if (arr[x] >= k) {
-                    answer[i]++;
+        //2. 신고받기
+        for(String s : report){
+            String[] arr = s.split(" ");
+            users.get(idIdx.get(arr[0])).reportList.add(arr[1]);
+            users.get(idIdx.get(arr[1])).reportedList.add(arr[0]);
+        }
+
+        //3. 정지 유저 리스트 만들기
+        for(User user : users){
+            if(user.reportedList.size() >= k)
+                suspendedList.put(user.name,1);
+        }
+
+        //4. 정답도출
+        for(User user : users){
+            for(String nameReport : user.reportList){
+                if(suspendedList.get(nameReport) != null){
+                    answer[idIdx.get(user.name)]++;
                 }
+
             }
         }
 
         return answer;
+    }
+}
+
+class User{
+    String name;
+    HashSet<String> reportList;
+    HashSet<String> reportedList;
+    public User(String name){
+        this.name = name;
+        reportList = new HashSet<>();
+        reportedList = new HashSet<>();
     }
 }
 
