@@ -10,22 +10,19 @@ public class P155652 {
     }
 
     static String solution(String s, String skip, int index) {
-        char[] arr = s.toCharArray();
-
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = index; j > 0; j--) {
-                char tmp = (((int)arr[i] + 1) > 122)?'a':(char) ((int)arr[i] + 1);
-                arr[i] = tmp;
-                if(skip.chars().anyMatch(a -> a==tmp)){
-                    j++;
-                };
-            }
-        }
-
         String answer = "";
-        for (char c:arr) {
-            answer+=c;
+        for (char ch: s.toCharArray()) {
+            char tmp = ch;
+            int idx = 0;
+            while (idx < index) {
+                tmp = (tmp == 'z') ? 'a' : (char) (tmp + 1);
+                if (!skip.contains(String.valueOf(tmp))) {
+                    idx++;
+                }
+            }
+            answer += tmp;
         }
+
         return answer;
     }
 }
