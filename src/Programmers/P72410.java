@@ -13,12 +13,7 @@ public class P72410 {
         //3단계
         new_id = new_id.replaceAll("\\.+", ".");
         //4단계
-        if (new_id.length() > 0 && new_id.charAt(0) == '.') {
-            new_id = new_id.substring(1, new_id.length());
-        }
-        if (new_id.length() > 0 && new_id.charAt(new_id.length() - 1) == '.') {
-            new_id = new_id.substring(0, new_id.length() - 1);
-        }
+        new_id = new_id.replaceAll("^[.]|[.]$","");
         //5단계
         if ("".equals(new_id)) {
             new_id = "a";
@@ -26,9 +21,7 @@ public class P72410 {
         //6단계
         if(new_id.length() > 15){
             new_id = new_id.substring(0, 15);
-            if (new_id.charAt(new_id.length() - 1) == '.') {
-                new_id = new_id.substring(0, new_id.length() - 1);
-            }
+            new_id = new_id.replaceAll("^[.]|[.]$","");
         }
         //7단계
         while (new_id.length() < 3 ) {
