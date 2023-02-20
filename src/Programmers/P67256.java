@@ -1,6 +1,19 @@
 package Programmers;
 
 public class P67256 {
+    static int[][] keypad = {
+             {3, 1}
+            ,{0, 0}
+            ,{0, 1}
+            ,{0, 2}
+            ,{1, 0}
+            ,{1, 1}
+            ,{1, 2}
+            ,{2, 0}
+            ,{2, 1}
+            ,{2, 2}
+    };
+
     public static void main(String[] args) {
         int[] arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
         String hand = "right";
@@ -8,50 +21,33 @@ public class P67256 {
     }
 
     static String solution(int[] numbers, String hand) {
-        String answer = "";
-        int left = 10;
-        int right = 12;
-        for (int i:numbers) {
-            switch (i) {
-                case 1:
-                case 4:
-                case 7:
-                    answer += "L";
-                    left = i;
-                    break;
-                case 3:
-                case 6:
-                case 9:
-                    answer += "R";
-                    right = i;
-                    break;
-                case 0:
-                    i = 11;
-                case 2:
-                case 5:
-                case 8:
-                    int distL = Math.abs(i - left) / 3 + Math.abs(i - left) % 3;
-                    int distR = Math.abs(i - right) / 3 + Math.abs(i - right) % 3;
+        int[] leftPos = {3, 0};
+        int[] rightPos = {3, 2};
 
-                    if (distL < distR) {
-                        answer += "L";
-                        left = i;
-                    } else if (distL > distR) {
-                        answer += "R";
-                        right = i;
-                    }else{
-                        switch (hand) {
-                            case "left":
-                                answer += "L";
-                                left = i;
-                                break;
-                            case "right":
-                                answer += "R";
-                                right = i;
-                        }
-                    }
-            }
+        String answer = "";
+        for (int i:numbers) {
+            String str = pushNumber(i, leftPos, rightPos, hand);
+            answer += str;
+
+            if(str == "R") rightPos = keypad[i];
+            if(str == "L") leftPos = keypad[i];
         }
+
         return answer;
     }
+
+    static String pushNumber(int num, int[] left, int[] right, String hand){
+        if (num == 1 || num == 4 || num == 7) return "L";
+        if (num == 3 || num == 6 || num == 9) return "R";
+
+        if (getDist(left, num) > getDist(right, num)) return "R";
+        if (getDist(left, num) < getDist(right, num)) return "L";
+
+        return hand.equals("right")?"R":"L";
+    }
+
+    static int getDist(int[] pos, int num) {
+        return Math.abs(pos[0] - keypad[num][0]) + Math.abs(pos[1] - keypad[num][1]);
+    }
+
 }
