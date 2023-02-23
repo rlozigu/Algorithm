@@ -1,7 +1,6 @@
 package Programmers;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 
 public class P42889 {
     public static void main(String[] args) {
@@ -12,37 +11,49 @@ public class P42889 {
     }
 
     static int[] solution(int N, int[] stages) {
-        int[][] arr = new int[N][2];
-
-        for (int i = 0; i < stages.length; i++) {
-            int stage = stages[i]-1;
-            if(stage < N ) arr[stage][0]++;
-            if(stage == N ) stage--;
-
-            for (int j = stage; j >= 0 ; j--) {
-                arr[j][1]++;
-            }
+        int nPlayers = stages.length;
+        int[] nStagePlayers = new int[N + 2];
+        for (int stage : stages) {
+            nStagePlayers[stage] += 1;
         }
 
-        double[][] failure = new double[N][2];
-        for (int i = 0; i < N; i++) {
-            failure[i][0] = i+1;
-            failure[i][1] = (double)arr[i][0] / (double)arr[i][1];
-            if(arr[i][1] == 0) failure[i][1] = 0;
-        }
+        int remainingPlayers = nPlayers;
+        List<Stage> stage = new ArrayList<>();
+        for (int id = 1 ; id <= N; id++) {
+            double failure = (double) nStagePlayers[id] / remainingPlayers;
+            remainingPlayers -= nStagePlayers[id];
 
-        Arrays.sort(failure, new Comparator<double[]>() {
-            @Override
-            public int compare(double[] o1, double[] o2) {
-                return o1[1]!=o2[1] ? (o1[1]-o2[1]<0?1:-1) : (o1[0]-o2[0]<0?-1:1);
-            }
-        });
+            Stage s = new Stage(id, failure);
+            stage.add(s);
+        }
+        Collections.sort(stage, Collections.reverseOrder());
 
         int[] answer = new int[N];
         for (int i = 0; i < N; i++) {
-            answer[i] = (int)failure[i][0];
+            answer[i] = stage.get(i).id;
         }
         return answer;
+    }
+
+    static class Stage implements Comparable<Stage> {
+        public int id;
+        public double failure;
+
+        public Stage(int id_, double failure_) {
+            id = id_;
+            failure = failure_;
+        }
+
+        @Override
+        public int compareTo(Stage o) {
+            if (failure < o.failure ) {
+                return -1;
+            }
+            if (failure > o.failure ) {
+                return 1;
+            }
+            return 0;
+        }
     }
 }
 
