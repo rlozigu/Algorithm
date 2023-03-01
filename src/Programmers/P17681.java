@@ -13,14 +13,13 @@ public class P17681 {
         String[] answer = new String[n];
 
         for (int i = 0; i < n; i++) {
-            String str1 = String.format("%0"+n+"d", Long.parseLong(Integer.toBinaryString(arr1[i])));
-            String str2 = String.format("%0"+n+"d", Long.parseLong(Integer.toBinaryString(arr2[i])));
+            answer[i] = Integer.toBinaryString(arr1[i] | arr2[i]);
+        }
 
-            String result = "";
-            for (int j = 0; j < n; j++) {
-                result += (str1.charAt(j) == '0' && str2.charAt(j) == '0')?" ":"#";
-            }
-            answer[i] = result;
+        for (int i = 0; i < n; i++) {
+            answer[i] = String.format("%" + n + "s", answer[i]);
+            answer[i] = answer[i].replaceAll("1", "#");
+            answer[i] = answer[i].replaceAll("0", " ");
         }
 
         return answer;
