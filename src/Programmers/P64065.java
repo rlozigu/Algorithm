@@ -13,27 +13,23 @@ public class P64065 {
         s = s.substring(2, s.length()-2);
         String[] arr = s.split("},\\{");
 
-        Arrays.sort(arr, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                if(o1.length() > o2.length()){
-                    return 1;
-                }else{
-                    return -1;
-                }
-            }
-        });
+        Arrays.sort(arr, (a, b) -> {
+            return a.length() - b.length();});
+
+        int[] answer = new int[arr.length];
+        int idx = 0;
+
+        Set<String> set = new HashSet<>();
 
         List<Integer> list = new ArrayList<>();
         for (String str:arr) {
             String[] tmp = str.split(",");
             for (String t:tmp) {
-                list.add(Integer.parseInt(t));
+                if(set.add(t)){
+                    answer[idx++] = Integer.parseInt(t);
+                }
             }
         }
-        list = list.stream().distinct().collect(Collectors.toList());
-        System.out.println(list);
-        int[] answer = list.stream().mapToInt(i -> i).toArray();
         return answer;
     }
 }
